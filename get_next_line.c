@@ -6,11 +6,11 @@
 /*   By: aet-tass <aet-tass@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 21:15:03 by aet-tass          #+#    #+#             */
-/*   Updated: 2023/01/11 04:31:09 by aet-tass         ###   ########.fr       */
+/*   Updated: 2023/01/11 05:05:23 by aet-tass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 #include "get_next_line.h"
-#include <fcntl.h>
+
 char	*ft_get_saved(int fd, char *saved)
 {
 	char	*buffer;
@@ -71,13 +71,4 @@ char *get_next_line(int fd)
 	buffer = ft_get_saved(fd, buffer);
 	line  = ft_get_line(buffer);
 	return (line);
-	
-}
-
-int	main()
-{
-	int	fd;
-	fd = open("ayoub.txt", O_RDWR);
-	char	str[100]="tassehasaratarapaeinprobasubject\nwelldone";
-	printf("%s", ft_get_line(str));
-}
+}	
