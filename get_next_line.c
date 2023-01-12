@@ -6,9 +6,10 @@
 /*   By: aet-tass <aet-tass@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 21:15:03 by aet-tass          #+#    #+#             */
-/*   Updated: 2023/01/11 05:05:23 by aet-tass         ###   ########.fr       */
+/*   Updated: 2023/01/12 06:13:26 by aet-tass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
+
 #include "get_next_line.h"
 
 char	*ft_get_saved(int fd, char *saved)
@@ -24,11 +25,16 @@ char	*ft_get_saved(int fd, char *saved)
 	{
 		count = read(fd, buffer, BUFFER_SIZE);
 		if (count == -1)
-			break;
+		{
+			free(buffer);
+			if (saved)
+				free(saved);
+			return (NULL);
+		}
 		saved = ft_strjoin(saved, buffer);
-	    buffer[count] = '\0';
+		buffer[count] = '\0';
 		if (ft_strchr(buffer, '\n'))
-			break;
+			break ;
 	}
 	free(buffer);
 	return (saved);
@@ -57,18 +63,47 @@ char	*ft_get_line(char *buffer)
 	}
 	if (buffer[i] && buffer[i] == '\n')
 	{
-		line[i] = '\0';
-		line[i+1] = '\n';
+		line[i] = '\n';
+		line[i + 1] = '\0';
 	}
 	return (line);
 }
 
-char *get_next_line(int fd)
+char	*ft_get_rest(char *buffer)
+{
+	char	*rest;
+	int		i;
+
+	i = 0;
+	if (!buffer)
+		return (NULL);
+	while (buffer[i] && buffer[i] != '\n')
+		i++;
+	while (buffer[i])
+	{
+		if (buffer[i] && buffer[i] == '\n')
+		{
+			rest = ft_substr(buffer, i + 1, ft_strlen(buffer) - (i + 1));
+			free (buffer);
+			return (rest);
+		}
+		i++;
+	}
+	free (buffer);
+	return (NULL);
+}
+
+char	*get_next_line(int fd)
 {
 	static char	*buffer;
-	char	*line;
+	char		*line;
 
+	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+		return (NULL);
 	buffer = ft_get_saved(fd, buffer);
-	line  = ft_get_line(buffer);
+	if (!buffer)
+		return (NULL);
+	line = ft_get_line(buffer);
+	buffer = ft_get_rest(buffer);
 	return (line);
-}	
+}
