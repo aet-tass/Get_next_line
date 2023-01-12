@@ -6,7 +6,7 @@
 /*   By: aet-tass <aet-tass@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 04:53:35 by aet-tass          #+#    #+#             */
-/*   Updated: 2023/01/12 06:04:07 by aet-tass         ###   ########.fr       */
+/*   Updated: 2023/01/12 06:52:44 by aet-tass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_strjoin(char *s1, char *s2)
 	size_t	i;
 	size_t	j;
 
-	new_str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(2) + 1));
+	new_str = malloc(sizeof(char) * (ft_strlen(s1) + ft_strlen(s2) + 1));
 	if (new_str == NULL)
 		return (NULL);
 	i = 0;
