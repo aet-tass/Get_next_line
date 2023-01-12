@@ -6,7 +6,7 @@
 /*   By: aet-tass <aet-tass@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 21:15:03 by aet-tass          #+#    #+#             */
-/*   Updated: 2023/01/12 06:13:26 by aet-tass         ###   ########.fr       */
+/*   Updated: 2023/01/12 06:47:25 by aet-tass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,7 +98,7 @@ char	*get_next_line(int fd)
 	static char	*buffer;
 	char		*line;
 
-	if (fd < 0 || BUFFER_SIZE <= 0 || read(fd, 0, 0) < 0)
+	if (fd < 0 || BUFFER_SIZE <= 0)
 		return (NULL);
 	buffer = ft_get_saved(fd, buffer);
 	if (!buffer)
