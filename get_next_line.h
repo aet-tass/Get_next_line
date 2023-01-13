@@ -6,7 +6,7 @@
 /*   By: aet-tass <aet-tass@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/12 04:45:38 by aet-tass          #+#    #+#             */
-/*   Updated: 2023/01/12 04:49:22 by aet-tass         ###   ########.fr       */
+/*   Updated: 2023/01/13 02:41:41 by aet-tass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,10 @@
 # endif
 
 size_t	ft_strlen(char *str);
-char	*ft_strchr(const char *str, int c);
+char	*ft_strchr(char *str, int c);
 char	*ft_strjoin(char *s1, char *s2);
 char	*ft_strdup(char *str);
 char	*ft_substr(char *s, unsigned int start, size_t len);
+char	*get_next_line(int fd);
 
 #endif

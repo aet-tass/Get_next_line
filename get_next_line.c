@@ -6,11 +6,18 @@
 /*   By: aet-tass <aet-tass@student.1337.ma>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/01/09 21:15:03 by aet-tass          #+#    #+#             */
-/*   Updated: 2023/01/12 07:02:50 by aet-tass         ###   ########.fr       */
+/*   Updated: 2023/01/13 17:40:21 by aet-tass         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
+
+void	ft_check_read(char *buffer, char *saved)
+{
+	free (buffer);
+	if (saved)
+		free (saved);
+}
 
 char	*ft_get_saved(int fd, char *saved)
 {
@@ -18,25 +25,26 @@ char	*ft_get_saved(int fd, char *saved)
 	int		count;
 
 	buffer = malloc(sizeof(char) * (BUFFER_SIZE + 1));
-	count = 1;
 	if (!buffer)
 		return (0);
+	count = 1;
 	while (count > 0)
 	{
 		count = read(fd, buffer, BUFFER_SIZE);
 		if (count == -1)
 		{
-			free(buffer);
-			if (saved)
-				free(saved);
+			ft_check_read(buffer, saved);
 			return (NULL);
 		}
-		saved = ft_strjoin(saved, buffer);
-		buffer[count] = '\0';
-		if (ft_strchr(buffer, '\n'))
-			break ;
+		if (count != 0)
+		{
+			buffer[count] = '\0';
+			saved = ft_strjoin(saved, buffer);
+			if (ft_strchr(buffer, '\n'))
+				break ;
+		}
 	}
-	free(buffer);
+	free (buffer);
 	return (saved);
 }
 
@@ -44,15 +52,13 @@ char	*ft_get_line(char *buffer)
 {
 	char	*line;
 	int		i;
-	int		bytes;
 
 	if (!buffer)
 		return (NULL);
 	i = 0;
 	while (buffer[i] && buffer[i] != '\n')
 		i++;
-	bytes = i + 2;
-	line = malloc(sizeof(char) * bytes);
+	line = malloc(sizeof(char) * (i + 2));
 	if (!line)
 		return (NULL);
 	i = 0;
@@ -61,11 +67,13 @@ char	*ft_get_line(char *buffer)
 			line [i] = buffer[i];
 			i++;
 	}
-	if (buffer[i] && buffer[i] == '\n')
+	if (buffer[i] == '\n')
 	{
 		line[i] = '\n';
 		line[i + 1] = '\0';
 	}
+	else
+		line[i] = '\0';
 	return (line);
 }
 
@@ -76,15 +84,20 @@ char	*ft_get_rest(char *buffer)
 
 	i = 0;
 	if (!buffer)
+	{
+		free (buffer);
 		return (NULL);
-	while (buffer[i] && buffer[i] != '\n')
-		i++;
+	}
 	while (buffer[i])
 	{
-		if (buffer[i] && buffer[i] == '\n')
+		if (buffer[i] == '\n')
 		{
-			rest = ft_substr(buffer, i + 1, ft_strlen(buffer) - (i + 1));
-			free (buffer);
+			if (buffer[i + 1] == '\0')
+			{
+				free (buffer);
+				return (NULL);
+			}
+			rest = ft_substr(buffer, i + 1, ft_strlen(buffer) - i);
 			return (rest);
 		}
 		i++;
